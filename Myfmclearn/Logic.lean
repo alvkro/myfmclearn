@@ -1,4 +1,4 @@
-section propositional
+section propositional -- LEMBRETE: use git push origin master
 
 variable (P Q R : Prop)
 
@@ -88,21 +88,33 @@ theorem contrapositive_law :
 ------------------------------------------------
 -- Irrefutability of LEM[P]
 ------------------------------------------------
-
-theorem lem_irrefutable :
+theorem lem_irrefutable : -- COMMITAR "COM AJUDA VIA ZULLIP"
   ¬ ¬ (P ∨ ¬ P)  := by
   intro h1
-  have lem_irrefutable := h1
-
-
-
+  have hp : (P ∨ ¬ P) := by
+    right
+    intro h2
+    apply h1
+    have hp : (P ∨ ¬ P) := by
+      left
+      exact h2
+    exact hp
+  apply h1
+  exact hp
 ------------------------------------------------
 -- Peirce's law
 ------------------------------------------------
 
 theorem peirce_law_weak :
   ((P → Q) → P) → ¬ ¬ P  := by
-  sorry
+  intro h1
+  intro hnotp
+
+
+
+
+
+
 
 
 ------------------------------------------------
@@ -111,7 +123,8 @@ theorem peirce_law_weak :
 
 theorem impl_linear :
   (P → Q) ∨ (Q → P)  := by
-  sorry
+
+
 
 
 ------------------------------------------------
