@@ -17,11 +17,8 @@ theorem doubleneg_intro :
 theorem doubleneg_elim :
   ¬ ¬ P → P  := by
   intro hnp
-  by_cases h : P
-  apply h
-  sorry
-
-
+  by_cases h : P -- DEMONSTRAR O (P ⇒ ⊥) ⇒ ⊥
+  have hp : ((P, ⊥) ⇒ ⊥) := by
 
 
 theorem doubleneg_law :
@@ -33,7 +30,7 @@ theorem doubleneg_law :
 -- Commutativity of ∨,∧
 ------------------------------------------------
 
-theorem disj_comm :
+theorem disj_comm : -- JEITO DE SE RESOLVER UMA DISJUNÇÃO
   (P ∨ Q) → (Q ∨ P)  := by
    intro hpq
    rcases hpq with hp | hq
@@ -43,12 +40,12 @@ theorem disj_comm :
    exact hq
 
 
-theorem conj_comm :
-  (P ∧ Q) → (Q ∧ P)  := by
+theorem conj_comm : -- JEITO DE SE RESOLVER UMA CONJUNÇÃO
+  (P ∧ Q) → (Q ∧ P) := by
   intro hpq
-  split
-  ext
-
+  apply And.intro
+  apply hpq.right
+  apply hpq.left
 
 
 ------------------------------------------------
@@ -57,7 +54,14 @@ theorem conj_comm :
 
 theorem impl_as_disj_converse :
   (¬ P ∨ Q) → (P → Q)  := by
-  sorry
+  intro nothpq
+  intro p
+  have impl_as_disj_converse := nothpq
+  rcases nothpq with hp | hq
+  intro h2
+
+
+
 
 theorem disj_as_impl :
   (P ∨ Q) → (¬ P → Q)  := by
@@ -87,7 +91,9 @@ theorem contrapositive_law :
 
 theorem lem_irrefutable :
   ¬ ¬ (P ∨ ¬ P)  := by
-  sorry
+  intro h1
+  have lem_irrefutable := h1
+
 
 
 ------------------------------------------------
