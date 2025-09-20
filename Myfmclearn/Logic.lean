@@ -2,6 +2,7 @@ section propositional -- LEMBRETE: use git push origin master
 
 variable (P Q R : Prop)
 
+-- LEMBRETE 2: Lembrar de ajeitar os nomes "horríveis"...
 
 ------------------------------------------------
 -- Double negation
@@ -16,10 +17,10 @@ theorem doubleneg_intro :
 
 theorem doubleneg_elim :
   ¬ ¬ P → P  := by
-  intro hnp
-  by_cases h : P -- DEMONSTRAR O (P ⇒ ⊥) ⇒ ⊥
-  have hp : ((P, ⊥) ⇒ ⊥) := by
-
+  intro nnp
+  by_cases h : P
+  exact h
+  exact False.elim (nnp h)
 
 theorem doubleneg_law :
   ¬ ¬ P ↔ P  := by
@@ -56,17 +57,18 @@ theorem impl_as_disj_converse :
   (¬ P ∨ Q) → (P → Q)  := by
   intro nothpq
   intro p
-  have impl_as_disj_converse := nothpq
-  rcases nothpq with hp | hq
-  intro h2
-
-
+  cases nothpq with
+  | inl np => exact False.elim (np p)
+  | inr q => exact q
 
 
 theorem disj_as_impl :
   (P ∨ Q) → (¬ P → Q)  := by
-  sorry
-
+  intro pvq
+  intro np
+  cases pvq with
+  | inl p => apply False.elim (np p)
+  | inr q => exact q
 
 ------------------------------------------------
 -- Contrapositive
@@ -74,11 +76,23 @@ theorem disj_as_impl :
 
 theorem impl_as_contrapositive :
   (P → Q) → (¬ Q → ¬ P)  := by
-  sorry
+  intro hpq
+  intro notq
+  by_cases h : P
+  intro hnotp
+  apply notq
+  apply hpq
+  apply h
+  assumption
 
 theorem impl_as_contrapositive_converse :
   (¬ Q → ¬ P) → (P → Q)  := by
-  sorry
+  intro notpnotq
+  intro p
+  by_cases h : Q
+  exact h
+  exact False.elim ((notpnotq h) p) -- Aplico ¬ Q → ¬ P em ¬Q, que resulta em ¬P, pra no final Aplicar ¬P em P
+
 
 theorem contrapositive_law :
   (P → Q) ↔ (¬ Q → ¬ P)  := by
@@ -109,11 +123,11 @@ theorem peirce_law_weak :
   ((P → Q) → P) → ¬ ¬ P  := by
   intro h1
   intro hnotp
-
-
-
-
-
+  by_cases h2 : P
+  apply hnotp h2 -- Da para você dar apply em mais de um nome :P
+  let pq : P → Q := by
+    intro p
+    exact
 
 
 
@@ -123,6 +137,10 @@ theorem peirce_law_weak :
 
 theorem impl_linear :
   (P → Q) ∨ (Q → P)  := by
+  rcases h
+
+
+
 
 
 
@@ -133,7 +151,10 @@ theorem impl_linear :
 
 theorem disj_as_negconj :
   P ∨ Q → ¬ (¬ P ∧ ¬ Q)  := by
-  sorry
+  intro h1
+  intro h2
+  by_cases h : P
+
 
 theorem conj_as_negdisj :
   P ∧ Q → ¬ (¬ P ∨ ¬ Q)  := by
@@ -256,7 +277,8 @@ theorem false_bottom :
 
 theorem true_top :
   P → True  := by
-  sorry
+  intro p
+  apply Elim.True
 
 
 end propositional
