@@ -240,20 +240,31 @@ theorem impl_refl :
 
 theorem weaken_disj_right :
   P → (P ∨ Q)  := by
-  sorry
+  intro p
+  have hp : (P ∨ Q) := by
+    left
+    exact p
+  exact hp
 
 theorem weaken_disj_left :
   Q → (P ∨ Q)  := by
-  sorry
+  intro q
+  have hp : (P ∨ Q) := by
+    right
+    exact q
+  exact hp
 
 theorem weaken_conj_right :
   (P ∧ Q) → P  := by
-  sorry
+  intro h1
+  rcases h1 with ⟨hp , hq⟩
+  exact hp
 
 theorem weaken_conj_left :
   (P ∧ Q) → Q  := by
-  sorry
-
+  intro h1
+  rcases h1 with ⟨hp , hq⟩
+  exact hq
 
 ------------------------------------------------
 -- Idempotence of ∨,∧
