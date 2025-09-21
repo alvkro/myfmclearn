@@ -128,7 +128,7 @@ theorem peirce_law_weak :
   let pq : P → Q := by
     intro p
     exact
-
+  sorry
 
 
 ------------------------------------------------
@@ -140,11 +140,6 @@ theorem impl_linear :
   rcases h
 
 
-
-
-
-
-
 ------------------------------------------------
 -- Interdefinability of ∨,∧
 ------------------------------------------------
@@ -153,13 +148,19 @@ theorem disj_as_negconj :
   P ∨ Q → ¬ (¬ P ∧ ¬ Q)  := by
   intro h1
   intro h2
-  by_cases h : P
+  cases h1 with
+  | inl p => exact h2.left p
+  | inr q => exact h2.right q
+
 
 
 theorem conj_as_negdisj :
   P ∧ Q → ¬ (¬ P ∨ ¬ Q)  := by
-  sorry
-
+  intro h1
+  intro h2
+  cases h2 with
+  | inl hnp => exact hnp h1.left
+  | inr qnp => exact qnp h1.right
 
 ------------------------------------------------
 -- De Morgan laws for ∨,∧
