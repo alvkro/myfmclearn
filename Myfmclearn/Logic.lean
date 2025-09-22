@@ -218,7 +218,15 @@ theorem distr_disj_conj_converse :
 
 theorem curry_prop :
   ((P ∧ Q) → R) → (P → (Q → R))  := by
-  sorry
+  intro h1
+  intro p
+  intro q
+  have h2 : P ∧ Q := by
+    constructor
+    exact p
+    exact q
+  apply h1
+  exact h2
 
 theorem uncurry_prop :
   (P → (Q → R)) → ((P ∧ Q) → R)  := by
@@ -231,7 +239,8 @@ theorem uncurry_prop :
 
 theorem impl_refl :
   P → P  := by
-  sorry
+  intro p
+  exact p
 
 
 ------------------------------------------------
@@ -366,8 +375,8 @@ theorem exists_as_neg_forall_law :
 ------------------------------------------------
 
 theorem exists_conj_as_conj_exists :
-  (∃ x, P x ∧ Q x) → (∃ x, P x) ∧ (∃ x, Q x)  := by
-  sorry
+  (∃ x, Px ∧ Qx) → (∃ x, Px) ∧ (∃ x, Q x)  := by
+  intro h1
 
 theorem exists_disj_as_disj_exists :
   (∃ x, P x ∨ Q x) → (∃ x, P x) ∨ (∃ x, Q x)  := by
