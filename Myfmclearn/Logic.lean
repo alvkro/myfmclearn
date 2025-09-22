@@ -137,8 +137,15 @@ theorem peirce_law_weak :
 
 theorem impl_linear :
   (P → Q) ∨ (Q → P)  := by
-  rcases h
-
+  by_cases h1 : P
+  right
+  intro q
+  assumption
+  left
+  intro p
+  exfalso
+  apply h1
+  exact p
 
 ------------------------------------------------
 -- Interdefinability of ∨,∧
@@ -294,12 +301,13 @@ theorem conj_idem :
 
 theorem false_bottom :
   False → P := by
-  sorry
+  intro false
+  cases false
 
 theorem true_top :
   P → True  := by
   intro p
-  apply Elim.True
+  sorry
 
 
 end propositional
@@ -309,7 +317,7 @@ end propositional
 section predicate
 
 variable (U : Type)
-variable (P Q : U → Type)
+variable (P Q : U → Prop)
 
 
 ------------------------------------------------
@@ -318,7 +326,9 @@ variable (P Q : U → Type)
 
 theorem demorgan_exists :
   ¬ (∃ x, P x) → (∀ x, ¬ P x)  := by
+  intro h1
   sorry
+
 
 theorem demorgan_exists_converse :
   (∀ x, ¬ P x) → ¬ (∃ x, P x)  := by
