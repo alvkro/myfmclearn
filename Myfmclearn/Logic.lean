@@ -22,10 +22,19 @@ theorem doubleneg_elim :
   exact h
   exact False.elim (nnp h)
 
-theorem doubleneg_law :
+theorem doubleneg_law : -- Lembrar de diminuir esse código (sos)
   ¬ ¬ P ↔ P  := by
-  sorry
-
+  constructor
+  intro nnp
+  by_cases h : P
+  exact h
+  exfalso
+  apply nnp
+  assumption
+  intro p
+  intro nnp1
+  apply nnp1
+  assumption
 
 ------------------------------------------------
 -- Commutativity of ∨,∧
@@ -96,8 +105,21 @@ theorem impl_as_contrapositive_converse :
 
 theorem contrapositive_law :
   (P → Q) ↔ (¬ Q → ¬ P)  := by
+  constructor
+  -- →
+  intro hpq
+  intro nq
+  intro np
+  have hq : Q := by
+    apply hpq
+    exact np
+  apply nq
+  exact hq
+  -- ←
+  intro hqp
+  intro p
+  by_cases h : P
   sorry
-
 
 ------------------------------------------------
 -- Irrefutability of LEM[P]
@@ -288,12 +310,28 @@ theorem weaken_conj_left :
 
 theorem disj_idem :
   (P ∨ P) ↔ P  := by
-  sorry
+  constructor
+  -- →
+  intro h
+  cases h with
+  | inl hp => exact hp
+  | inr hp => exact hp
+  -- ←
+  intro p
+  constructor
+  exact p
 
 theorem conj_idem :
   (P ∧ P) ↔ P := by
-  sorry
-
+  constructor
+  -- →
+  intro pp
+  rcases pp with ⟨hp , _⟩
+  exact hp
+  -- ←
+  intro p
+  constructor
+  repeat exact p
 
 ------------------------------------------------
 -- Bottom, Top
@@ -307,8 +345,7 @@ theorem false_bottom :
 theorem true_top :
   P → True  := by
   intro p
-  sorry
-
+  trivial
 
 end propositional
 
