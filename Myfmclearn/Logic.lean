@@ -197,10 +197,26 @@ theorem conj_as_negdisj :
 
 theorem demorgan_disj :
   ¬ (P ∨ Q) → (¬ P ∧ ¬ Q)  := by
-  sorry
+  intro h1
+  constructor
+  intro p
+  apply h1
+  left
+  exact p
+  intro q
+  apply h1
+  right
+  assumption
 
 theorem demorgan_disj_converse :
   (¬ P ∧ ¬ Q) → ¬ (P ∨ Q)  := by
+  intro h1  -- h1: ¬P ∧ ¬Q
+  intro h2  -- h2: P ∨ Q (supomos para chegar a uma contradição)
+  cases h1 with
+  | intro np nq =>
+    apply np
+    contradiction
+
   sorry
 
 theorem demorgan_conj :
@@ -259,8 +275,13 @@ theorem curry_prop :
 
 theorem uncurry_prop :
   (P → (Q → R)) → ((P ∧ Q) → R)  := by
-  sorry
-
+  intro h1
+  intro h2
+  cases h2 with
+  | intro hP hQ
+  apply h1
+  exact hP
+  exact hQ
 
 ------------------------------------------------
 -- Reflexivity of →
