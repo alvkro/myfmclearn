@@ -221,14 +221,22 @@ theorem demorgan_disj_converse :
 
 theorem demorgan_conj :
   ¬ (P ∧ Q) → (¬ Q ∨ ¬ P)  := by
-  sorry
+  intro h1
+  have h2 : ¬ Q ∨ ¬ P := by
+    by_cases h : Q
+    right
+    intro p
+    apply h1
+    constructor
+    apply p
+    apply h
+    left
+    apply h
+  assumption
 
-theorem demorgan_conj_converse :
-  (¬ Q ∨ ¬ P) → ¬ (P ∧ Q)  := by
-  sorry
 
 theorem demorgan_conj_law :
-  ¬ (P ∧ Q) ↔ (¬ Q ∨ ¬ P)  := by
+  ¬ (P ∧ Q) ↔ (¬ Q ∨ ¬ P) := by
   sorry
 
 theorem demorgan_disj_law :
@@ -385,7 +393,10 @@ variable (P Q : U → Prop)
 theorem demorgan_exists :
   ¬ (∃ x, P x) → (∀ x, ¬ P x)  := by
   intro h1
-  sorry
+  intro x
+  intro h2
+  have h3 : ∃ x, P x := ⟨x, h2⟩
+  exact h1 h3
 
 
 theorem demorgan_exists_converse :
@@ -443,7 +454,7 @@ theorem exists_as_neg_forall_law :
 ------------------------------------------------
 
 theorem exists_conj_as_conj_exists :
-  (∃ x, Px ∧ Qx) → (∃ x, Px) ∧ (∃ x, Q x)  := by
+  (∃ x, Px ∧ Q x) → (∃ x, Px) ∧ (∃ x, Q x)  := by
   intro h1
 
 theorem exists_disj_as_disj_exists :
