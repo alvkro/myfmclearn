@@ -118,8 +118,10 @@ theorem contrapositive_law :
   -- ←
   intro hqp
   intro p
-  by_cases h : P
-  sorry
+  by_cases h : Q
+  exact h
+  have np : ¬P := hqp h
+  contradiction
 
 ------------------------------------------------
 -- Irrefutability of LEM[P]
