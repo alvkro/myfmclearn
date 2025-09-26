@@ -210,14 +210,11 @@ theorem demorgan_disj :
 
 theorem demorgan_disj_converse :
   (¬ P ∧ ¬ Q) → ¬ (P ∨ Q)  := by
-  intro h1  -- h1: ¬P ∧ ¬Q
-  intro h2  -- h2: P ∨ Q (supomos para chegar a uma contradição)
-  cases h1 with
-  | intro np nq =>
-    apply np
-    contradiction
-
-  sorry
+  intro h1
+  intro h2
+  cases h2 with
+  | inl hip1 => apply h1.left hip1
+  | inr hip2 => apply h1.right hip2
 
 theorem demorgan_conj :
   ¬ (P ∧ Q) → (¬ Q ∨ ¬ P)  := by
@@ -234,14 +231,58 @@ theorem demorgan_conj :
     apply h
   assumption
 
+theorem demorgan_conj_converse :
+  (¬ Q ∨ ¬ P) → ¬ (P ∧ Q)  := by
+  intro h1
+  intro h2
+  cases h1 with
+  | inl hip1 => apply hip1 h2.right
+  | inr hip2 => apply hip2 h2.left
 
 theorem demorgan_conj_law :
   ¬ (P ∧ Q) ↔ (¬ Q ∨ ¬ P) := by
-  sorry
+  constructor
+  -- → (demorgan_conj)
+  intro h1
+  have h2 : ¬ Q ∨ ¬ P := by
+    by_cases h : Q
+    right
+    intro p
+    apply h1
+    constructor
+    apply p
+    apply h
+    left
+    apply h
+  assumption
+  -- ← (demorgan_conj_converse)
+  intro h1
+  intro h2
+  cases h1 with
+  | inl hip1 => apply hip1 h2.right
+  | inr hip2 => apply hip2 h2.left
+
 
 theorem demorgan_disj_law :
   ¬ (P ∨ Q) ↔ (¬ P ∧ ¬ Q)  := by
-  sorry
+  constructor
+  -- ←
+  intro h1
+  constructor
+  intro p
+  apply h1
+  left
+  exact p
+  intro q
+  apply h1
+  right
+  assumption
+  -- →
+  intro h1
+  intro h2
+  cases h2 with
+  | inl hip1 => apply h1.left hip1
+  | inr hip2 => apply h1.right hip2
 
 
 ------------------------------------------------
@@ -250,7 +291,11 @@ theorem demorgan_disj_law :
 
 theorem distr_conj_disj :
   P ∧ (Q ∨ R) → (P ∧ Q) ∨ (P ∧ R)  := by
-  sorry
+  intro h1
+  have h2 : P ∧ Q ∨ P ∧ R := by
+    left
+
+
 
 theorem distr_conj_disj_converse :
   (P ∧ Q) ∨ (P ∧ R) → P ∧ (Q ∨ R)  := by
